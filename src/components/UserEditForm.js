@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function UserEditForm({ user }) {
+function UserEditForm({ user, setUsers }) {
   const [formData, setFormData] = useState({ ...user });
 
   const handleChange = (e) => {
@@ -9,8 +9,13 @@ function UserEditForm({ user }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Update the user in the users array
+    setUsers((prevUsers) =>
+      prevUsers.map((u) => (u.id === user.id ? { ...u, ...formData } : u))
+    );
+
     alert("User info updated!");
-    console.log(formData);
   };
 
   return (
