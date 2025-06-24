@@ -2,10 +2,10 @@ import React from "react";
 import UserEditForm from "./UserEditForm";
 import SubscriptionEditor from "./SubscriptionEditor";
 
-function UserDetail({ user }) {
+function UserDetail({ user, setUsers }) {
   return (
     <div style={{ marginTop: '1rem' }}>
-      <UserEditForm user={user} />
+      <UserEditForm user={user} setUsers={setUsers} />
       <SubscriptionEditor user={user} />
       <div style={{ marginTop: '1rem' }}>
         <h3>Purchase History</h3>
