@@ -6,7 +6,7 @@ function UserDetail({ user, setUsers }) {
   return (
     <div style={{ marginTop: '1rem' }}>
       <UserEditForm user={user} setUsers={setUsers} />
-      <SubscriptionEditor user={user} />
+      <SubscriptionEditor user={user} setUsers={setUsers}/>
       <div style={{ marginTop: '1rem' }}>
         <h3>Purchase History</h3>
         <ul>
