@@ -13,7 +13,6 @@ function UserPage() {
 
   return (
     <div style={{ padding: '1rem' }}>
-      <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>User Detail</h1>
       <UserDetail user={user} setUsers={setUsers} />
     </div>
   );
