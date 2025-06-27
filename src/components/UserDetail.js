@@ -3,8 +3,10 @@ import UserEditForm from "./UserEditForm";
 import SubscriptionEditor from "./SubscriptionEditor";
 import VehicleThumbnail from "./VehicleThumbnail";
 import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 function UserDetail({ user, setUsers }) {
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         type: "Monthly Membership",
         amount: 29.99,
@@ -42,6 +44,28 @@ function UserDetail({ user, setUsers }) {
 
     return (
         <div style={{ marginTop: '1rem' }}>
+
+            {/* Home Button */}
+            <button
+                onClick={() => navigate("/")}
+                style={{
+                    marginBottom: '1rem',
+                    padding: '0.5rem 1rem',
+                    backgroundColor: '#007bff',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                }}
+            >
+                ← Home
+            </button>
+
+            {/* Profile Title */}
+            <h2 style={{ fontWeight: 'bold', fontSize: '1.4rem', marginBottom: '1rem' }}>
+                {user.name}'s Profile Details
+            </h2>
+
             <UserEditForm user={user} setUsers={setUsers} />
             <SubscriptionEditor user={user} setUsers={setUsers} />
 
@@ -123,26 +147,26 @@ function UserDetail({ user, setUsers }) {
                                 ...user,
                                 subscriptionStatus: newStatus,
                                 purchaseHistory: isCanceling
-                                  ? [
-                                      ...user.purchaseHistory,
-                                      {
-                                        id: uuidv4(),
-                                        item: "Membership Canceled",
-                                        amount: 0.0,
-                                        date: new Date().toISOString().slice(0, 10),
-                                      },
+                                    ? [
+                                        ...user.purchaseHistory,
+                                        {
+                                            id: uuidv4(),
+                                            item: "Membership Canceled",
+                                            amount: 0.0,
+                                            date: new Date().toISOString().slice(0, 10),
+                                        },
                                     ]
-                                  : [
-                                      ...user.purchaseHistory,
-                                      {
-                                        id: uuidv4(),
-                                        item: "Membership Reactivated (CSR Action)",
-                                        amount: 0.0,
-                                        date: new Date().toISOString().slice(0, 10),
-                                      },
+                                    : [
+                                        ...user.purchaseHistory,
+                                        {
+                                            id: uuidv4(),
+                                            item: "Membership Reactivated (CSR Action)",
+                                            amount: 0.0,
+                                            date: new Date().toISOString().slice(0, 10),
+                                        },
                                     ],
-                              };
-                              
+                            };
+
 
                             setUsers((prev) =>
                                 prev.map((u) => (u.id === user.id ? updatedUser : u))
