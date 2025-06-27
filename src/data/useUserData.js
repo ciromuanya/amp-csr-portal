@@ -14,8 +14,8 @@ const initialUsers = [
         model: "Camry",
         license: "ABC123",
         active: true,
-        photoUrl: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.roundrocktoyota.com%2Fmodels%2Ftoyota-camry-round-rock-tx.htm&psig=AOvVaw2XGpZFKgdRilWY57fiRuRq&ust=1751055625421000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCJi-89b0j44DFQAAAAAdAAAAABAE",
-        platePhotoUrl: "https://myplates.azureedge.net/plates/auto.Embossed_WhiteBlack.png"
+        photoUrl: "/jane-car.png",
+        platePhotoUrl: "/jane-plate.png"
     },
     ],
     subscriptionStatus: "active",
