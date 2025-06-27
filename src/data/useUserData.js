@@ -22,7 +22,7 @@ const initialUsers = [
     purchaseHistory: [
       { id: "p1",
         item: "Single Wash",
-        date: "2024-04-22",
+        date: "2025-04-22",
         amount: 12.99
     },
     ],
@@ -44,7 +44,7 @@ const initialUsers = [
     purchaseHistory: [
       { id: "p2",
         item: "Monthly Membership",
-        date: "2024-03-15",
+        date: "2024-06-23",
         amount: 29.99 },
     ],
   },
@@ -65,7 +65,7 @@ const initialUsers = [
     purchaseHistory: [
       { id: "p3",
         item: "Yearly Membership",
-        date: "2024-01-10",
+        date: "2025-01-10",
         amount: 299.99 
     },
     ],
