@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import useUserData from "../data/useUserData";
-import VehicleThumbnail from "./VehicleThumbnail"; // ✅ import thumbnail component
+import VehicleThumbnail from "./VehicleThumbnail";
 
 function UserList({ filterStatus }) {
   const [users, setUsers] = useUserData();
@@ -24,10 +24,29 @@ function UserList({ filterStatus }) {
       ? users.filter((user) => user.subscriptionStatus === filterStatus)
       : users;
 
-  const handleDelete = (userId) => {
-    const updated = users.map((user) =>
-      user.id === userId ? { ...user, deleted: true } : user
-    );
+  const toggleDelete = (userId) => {
+    const updated = users.map((user) => {
+      if (user.id !== userId) return user;
+
+      if (user.deleted) {
+        // Undo delete: restore previousStatus if available
+        return {
+          ...user,
+          deleted: false,
+          subscriptionStatus: user.previousStatus || "active", // fallback to active
+          previousStatus: undefined,
+        };
+      } else {
+        // Mark as deleted and store current status
+        return {
+          ...user,
+          deleted: true,
+          previousStatus: user.subscriptionStatus,
+          subscriptionStatus: "canceled", // visually reflect cancellation
+        };
+      }
+    });
+
     setUsers(updated);
   };
 
@@ -45,30 +64,34 @@ function UserList({ filterStatus }) {
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
+            position: "relative",
           }}
         >
-          {/* Left Column: User Info + Button */}
+          {/* Top-right delete/undo button */}
+          <button
+            onClick={() => toggleDelete(user.id)}
+            style={{
+              position: "absolute",
+              top: "0.5rem",
+              right: "0.5rem",
+              padding: "0.4rem 0.75rem",
+              backgroundColor: user.deleted ? "#28a745" : "#dc3545",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            {user.deleted ? "Undo Delete" : "Delete"}
+          </button>
+
+          {/* Left Column: User Info */}
           <div style={{ flex: "1 1 250px", marginRight: "1rem" }}>
             <h2>{user.name}</h2>
             <p>Email: {user.email}</p>
             <p>Phone: {user.phone}</p>
             <p>Status: {user.subscriptionStatus}</p>
             <Link to={`/user/${user.id}`}>View Details</Link>
-            <div style={{ marginTop: "1rem" }}>
-              <button
-                onClick={() => handleDelete(user.id)}
-                style={{
-                  padding: "0.4rem 0.75rem",
-                  backgroundColor: "#dc3545",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                Delete
-              </button>
-            </div>
           </div>
 
           {/* Right Column: Vehicle Thumbnails */}
@@ -79,7 +102,7 @@ function UserList({ filterStatus }) {
               flexWrap: "wrap",
               alignItems: "flex-start",
               gap: "0.5rem",
-              marginTop: "0.5rem"
+              marginTop: "0.5rem",
             }}
           >
             {user.vehicles?.map((vehicle) => (
