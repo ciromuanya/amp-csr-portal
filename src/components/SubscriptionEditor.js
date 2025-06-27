@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 function SubscriptionEditor({ user, setUsers }) {
-  const [vehicles, setVehicles] = useState(user.vehicles);
+  const [vehicles, setVehicles] = useState(user.vehicles || []);
 
   const handleChange = (index, e) => {
     const updated = [...vehicles];
@@ -12,6 +13,24 @@ function SubscriptionEditor({ user, setUsers }) {
   const handleToggleActive = (index) => {
     const updated = [...vehicles];
     updated[index].active = !updated[index].active;
+    setVehicles(updated);
+  };
+
+  const handleAddVehicle = () => {
+    const newVehicle = {
+      id: uuidv4(),
+      make: "",
+      model: "",
+      license: "",
+      active: false,
+      photoUrl: "",
+      platePhotoUrl: ""
+    };
+    setVehicles([...vehicles, newVehicle]);
+  };
+
+  const handleDeleteVehicle = (id) => {
+    const updated = vehicles.filter((v) => v.id !== id);
     setVehicles(updated);
   };
 
@@ -62,9 +81,26 @@ function SubscriptionEditor({ user, setUsers }) {
               {vehicle.active ? "Deactivate" : "Activate"}
             </button>
           </div>
+          <div>
+            <button
+              type="button"
+              style={{ marginTop: '0.5rem', color: 'red' }}
+              onClick={() => handleDeleteVehicle(vehicle.id)}
+            >
+              Delete Vehicle
+            </button>
+          </div>
         </div>
       ))}
-      <button onClick={handleSave}>Save Vehicle Changes</button>
+
+      <div style={{ marginTop: '1rem' }}>
+        <button type="button" onClick={handleAddVehicle}>
+          Add Vehicle
+        </button>
+        <button type="button" onClick={handleSave} style={{ marginLeft: '1rem' }}>
+          Save Vehicle Changes
+        </button>
+      </div>
     </div>
   );
 }
