@@ -8,7 +8,7 @@ function UserList({ filterStatus }) {
   const [users, setUsers] = useUserData();
 
   const getStatusColor = (user) => {
-    const { active, overdue, canceled, deleted, gray } = styles.statusColors;
+    const { active, overdue, canceled, gray } = styles.statusColors;
 
     if (user.deleted || user.subscriptionStatus === "canceled") return canceled;
     if (user.subscriptionStatus === "overdue") return overdue;
