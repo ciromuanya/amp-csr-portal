@@ -2,21 +2,24 @@ import React from "react";
 import { Link } from "react-router-dom";
 import useUserData from "../data/useUserData";
 import VehicleThumbnail from "./VehicleThumbnail";
+import { styles } from "../styles/styles";
 
 function UserList({ filterStatus }) {
   const [users, setUsers] = useUserData();
 
   const getStatusColor = (user) => {
-    if (user.deleted || user.subscriptionStatus === "canceled") return "#f8d7da"; // red
-    if (user.subscriptionStatus === "overdue") return "#fff3cd"; // yellow
+    const { active, overdue, canceled, deleted, gray } = styles.statusColors;
+
+    if (user.deleted || user.subscriptionStatus === "canceled") return canceled;
+    if (user.subscriptionStatus === "overdue") return overdue;
 
     const hasActiveVehicle = user.vehicles?.some((v) => v.active);
-    const hasPurchaseHistory = user.purchaseHistory && user.purchaseHistory.length > 0;
+    const hasPurchaseHistory = user.purchaseHistory?.length > 0;
 
-    if (user.subscriptionStatus === "active" && hasActiveVehicle) return "#d4edda"; // green
-    if (!hasPurchaseHistory) return "#e2e3e5"; // gray
+    if (user.subscriptionStatus === "active" && hasActiveVehicle) return active;
+    if (!hasPurchaseHistory) return gray;
 
-    return "#e2e3e5"; // fallback gray
+    return gray;
   };
 
   const filteredUsers =
@@ -29,20 +32,18 @@ function UserList({ filterStatus }) {
       if (user.id !== userId) return user;
 
       if (user.deleted) {
-        // Undo delete: restore previousStatus if available
         return {
           ...user,
           deleted: false,
-          subscriptionStatus: user.previousStatus || "active", // fallback to active
+          subscriptionStatus: user.previousStatus || "active",
           previousStatus: undefined,
         };
       } else {
-        // Mark as deleted and store current status
         return {
           ...user,
           deleted: true,
           previousStatus: user.subscriptionStatus,
-          subscriptionStatus: "canceled", // visually reflect cancellation
+          subscriptionStatus: "canceled",
         };
       }
     });
@@ -56,30 +57,18 @@ function UserList({ filterStatus }) {
         <div
           key={user.id}
           style={{
+            ...styles.card,
             backgroundColor: getStatusColor(user),
-            border: "1px solid #ccc",
-            borderRadius: "8px",
-            marginBottom: "1rem",
-            padding: "1rem",
-            display: "flex",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
             position: "relative",
+            ...styles.flexRowBetween,
           }}
         >
           {/* Top-right delete/undo button */}
           <button
             onClick={() => toggleDelete(user.id)}
             style={{
-              position: "absolute",
-              top: "0.5rem",
-              right: "0.5rem",
-              padding: "0.4rem 0.75rem",
+              ...styles.deleteButton,
               backgroundColor: user.deleted ? "#28a745" : "#dc3545",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
             }}
           >
             {user.deleted ? "Undo Delete" : "Delete"}
@@ -95,16 +84,7 @@ function UserList({ filterStatus }) {
           </div>
 
           {/* Right Column: Vehicle Thumbnails */}
-          <div
-            style={{
-              flex: "2 1 400px",
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "flex-start",
-              gap: "0.5rem",
-              marginTop: "0.5rem",
-            }}
-          >
+          <div style={styles.thumbnailWrapper}>
             {user.vehicles?.map((vehicle) => (
               <VehicleThumbnail key={vehicle.id} vehicle={vehicle} />
             ))}

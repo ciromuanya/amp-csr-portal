@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { styles } from "../styles/styles";
 
 function VehicleThumbnail({ vehicle }) {
   const [expanded, setExpanded] = useState(false);
-
   const toggleExpand = () => setExpanded(!expanded);
 
   return (
@@ -14,7 +14,7 @@ function VehicleThumbnail({ vehicle }) {
         borderRadius: "8px",
         padding: "0.5rem",
         width: "160px",
-        minHeight: "250px", // Ensures space for image and text
+        minHeight: "250px",
         margin: "0.5rem",
         backgroundColor: "#f9f9f9",
       }}
@@ -24,7 +24,7 @@ function VehicleThumbnail({ vehicle }) {
         alt={`${vehicle.make} ${vehicle.model}`}
         onError={(e) => {
           e.target.onerror = null;
-          e.target.src = "/amp-placeholder.png"; // Add a placeholder image in /public
+          e.target.src = "/placeholder.png";
         }}
         style={{
           display: "block",
@@ -39,6 +39,7 @@ function VehicleThumbnail({ vehicle }) {
         {vehicle.make} {vehicle.model}
       </h4>
       <p style={{ fontSize: "0.9rem" }}>Plate: {vehicle.license}</p>
+
       {expanded && (
         <div style={{ marginTop: "0.5rem" }}>
           <img
