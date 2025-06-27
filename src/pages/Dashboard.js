@@ -8,28 +8,34 @@ function Dashboard() {
 
   return (
     <div style={{ padding: "1rem" }}>
-      <h1 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
-        CSR Portal - User Dashboard
+    {/* Title & Logo Row */}
+    <div style={{ display: "flex", alignItems: "center", marginBottom: "1rem" }}>
+      <img
+        src="/amp-placeholder.png"
+        alt="Logo"
+        style={{ width: "40px", height: "40px", marginRight: "1rem" }}
+      />
+      <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", margin: 0 }}>
+        CSR Portal
       </h1>
+    </div>
 
-      {/* New User Button */}
+    {/* Controls Row (New User Button + Filter) */}
+    <div style={{ display: "flex", alignItems: "center", marginBottom: "1rem", gap: "1rem" }}>
       <button
         style={{
           padding: "0.5rem 1rem",
-          marginBottom: "1rem",
           backgroundColor: "#007bff",
           color: "white",
           border: "none",
           borderRadius: "4px",
           cursor: "pointer",
-          marginRight: "1rem",
         }}
         onClick={() => navigate("/new-user")}
       >
         + New User
       </button>
 
-      {/* Filter Dropdown */}
       <label htmlFor="statusFilter" style={{ marginRight: "0.5rem" }}>
         Filter by Status:
       </label>
@@ -44,10 +50,11 @@ function Dashboard() {
         <option value="overdue">Overdue</option>
         <option value="canceled">Canceled</option>
       </select>
-
-      {/* Pass filterStatus as prop to UserList */}
-      <UserList filterStatus={filterStatus} />
     </div>
+
+    {/* User List */}
+    <UserList filterStatus={filterStatus} />
+  </div>
   );
 }
 
